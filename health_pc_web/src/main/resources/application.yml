@@ -1,0 +1,51 @@
+#配置端口号
+server:
+  port: 82
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://:3306/health?serverTimezone=UTC&useSSL=false
+    username: root
+    password: 12345678
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      min-idle: 5
+      max-active: 10
+      max-wait: 3000
+
+  thymeleaf:
+    #关闭页面缓存
+    cache: false
+
+  #配置静态资源过滤的问题
+  web:
+    resources:
+      static-locations: classpath:/static/,classpath:/public/,classpath:/resources/,classpath:/META-INF/resource/,file:${location}
+
+#mybatis-plus
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+
+#分页插件
+pagehelper:
+  helper-dialect: mysql
+
+#日志配置
+logging:
+  level:
+    com:
+      kawa: debug
+
+
+#七牛云
+qiniu:
+  # 账号
+  accessKey: SwPfN4ZJ2Y_GF20QdkUjrKxVaIfsM6rWcYQv5gQn
+  # 秘钥
+  secretKey: TFqjcp5FSHx7hR96ZJspCO1PwOVT0ZBsNvwAXZbs
+  # 桶名称
+  bucket: trip-cloud-11111
+  # 外部域名
+  domainName: http://s3xvyryn6.hd-bkt.clouddn.com/
