@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kawa.mapper.CheckgroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.kawa.entity.Checkgroup">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="helpcode" column="helpCode" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="CHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="attention" column="attention" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,code,name,
+        helpCode,sex,remark,
+        attention
+    </sql>
+
+    <!--添加 t_checkgroup_checkitem 检查组id 和检查项目id-->
+    <insert id="addCheckgroupCheckitem">
+        INSERT INTO `health`.`t_checkgroup_checkitem`(`checkgroup_id`, `checkitem_id`)
+        VALUES (#{checkgroupId},#{checkitemId});
+    </insert>
+
+    <!--添加检查组-->
+    <insert id="add">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO `health`.`t_checkgroup` ( `id`, `code`, `name`, `helpCode`, `sex`, `remark`, `attention` )
+        VALUES
+        ( null , #{code},#{name},#{helpcode},#{sex},#{remark},#{attention});
+    </insert>
+
+    <!--分页查询检查组-->
+    <select id="findPage" resultType="com.kawa.entity.Checkgroup">
+        SELECT * FROM t_checkgroup
+        <if test="queryString != null and queryString != '' ">
+            where code like "%"#{queryString}"%" or name like "%"#{queryString}"%" or helpCode like "%"#{queryString}"%"
+        </if>
+        order by id Desc
+    </select>
+
+    <!--根据ID查询检查组-->
+    <select id="findById" resultType="com.kawa.entity.Checkgroup">
+        SELECT * FROM t_checkgroup WHERE id = #{id}
+    </select>
+
+    <!--根据检查组id查询和该检查组绑定的检查项目id集合-->
+    <select id="findCheckItemIdsByCheckGroupId" resultType="java.lang.Integer">
+        SELECT checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{checkgroup_id}
+    </select>
+</mapper>

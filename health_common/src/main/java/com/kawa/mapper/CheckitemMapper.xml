@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kawa.mapper.CheckitemMapper">
+
+    <resultMap id="BaseResultMap" type="com.kawa.entity.Checkitem">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="CHAR"/>
+        <result property="age" column="age" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="FLOAT"/>
+        <result property="type" column="type" jdbcType="CHAR"/>
+        <result property="attention" column="attention" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,code,name,
+        sex,age,price,
+        type,attention,remark
+    </sql>
+    <insert id="add">
+        INSERT INTO `health`.`t_checkitem` ( `id`, `code`, `name`, `sex`, `age`, `price`, `type`, `attention`, `remark` )
+        VALUES (NULL ,#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
+    </insert>
+
+    <!--编辑检查项-->
+    <update id="edit">
+        UPDATE `health`.`t_checkitem`
+                SET
+        `code` = #{code},
+        `name` = #{name},
+        `sex` = #{sex},
+        `age` = #{age},
+        `price` = #{price},
+        `type` = #{type},
+        `attention` = #{attention},
+        `remark` = #{remark}
+        WHERE
+            `id` = #{id};
+    </update>
+
+    <!--删除检查项-->
+    <delete id="deleteCheckitem">
+        delete from t_checkitem where id =#{id}
+    </delete>
+
+    <!--分页查询检查项-->
+    <select id="findPage" resultType="com.kawa.entity.Checkitem">
+        SELECT * from t_checkitem
+        <if test="queryString != null and queryString != '' ">
+            where code = #{queryString} or name = #{queryString}
+        </if>
+        order by id Desc
+    </select>
+
+    <!--查询所有的检查项-->
+    <select id="findAll" resultType="com.kawa.entity.Checkitem">
+        SELECT * from t_checkitem
+    </select>
+
+    <!--查询单个检查项-->
+    <select id="findById" resultType="com.kawa.entity.Checkitem">
+        SELECT * from t_checkitem where id = #{id}
+    </select>
+</mapper>

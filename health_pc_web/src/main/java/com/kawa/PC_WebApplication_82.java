@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = "com.kawa.dao")
+@MapperScan(basePackages = "com.kawa.mapper")
 public class PC_WebApplication_82 {
 
     public static void main(String[] args) {
