@@ -36,6 +36,34 @@
         ( null , #{code},#{name},#{helpcode},#{sex},#{remark},#{attention});
     </insert>
 
+    <!--根据id更新检查组-->
+    <update id="editCheckgroup">
+        UPDATE `health`.`t_checkgroup`
+        SET
+            `code` = #{code} ,
+            `name` = #{name} ,
+            `helpCode` = #{helpcode} ,
+            `sex` = #{sex} ,
+            `remark` = #{remark} ,
+            `attention` = #{attention}
+        WHERE
+            `id` = #{id};
+    </update>
+    <!--通过检查组id 删除 t_checkgroup_checkitem(解绑)-->
+    <delete id="deleteBycheckgroupId">
+        DELETE FROM t_checkgroup_checkitem WHERE group_id = #{checkgroupId}
+    </delete>
+
+    <!--删除检查组-->
+    <delete id="deleteCheckgroup">
+        DELETE FROM t_checkgroup where id = #{id}
+    </delete>
+
+    <!--删除检查组绑定信息-->
+    <delete id="deleteCheckgroupCheckitem">
+        DELETE FROM t_checkgroup_checkitem WHERE checkgroup_id = #{id}
+    </delete>
+
     <!--分页查询检查组-->
     <select id="findPage" resultType="com.kawa.entity.Checkgroup">
         SELECT * FROM t_checkgroup
@@ -52,6 +80,19 @@
 
     <!--根据检查组id查询和该检查组绑定的检查项目id集合-->
     <select id="findCheckItemIdsByCheckGroupId" resultType="java.lang.Integer">
-        SELECT checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{checkgroup_id}
+        SELECT checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{checkGroupId}
+    </select>
+
+    <!--查询所有检查组信息-->
+    <select id="findAll" resultType="com.kawa.entity.Checkgroup">
+        SELECT * FROM t_checkgroup
+    </select>
+
+<!--根据检查组id集合 批量查询检查组对象-->
+    <select id="batchFindById" resultType="com.kawa.entity.Checkgroup">
+        SELECT * from t_checkgroup where id in
+        <foreach collection="checkGroupIds" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
     </select>
 </mapper>

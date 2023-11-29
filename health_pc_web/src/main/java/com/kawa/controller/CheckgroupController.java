@@ -44,7 +44,7 @@ public class CheckgroupController {
     /**
      * 根据ID查询检查组
      */
-    @PostMapping("/findById")
+    @GetMapping("/findById")
     public Result findById(Integer id){
 
         Checkgroup checkgroup = checkgroupService.findById(id);
@@ -55,9 +55,41 @@ public class CheckgroupController {
      * 根据检查组id查询和该检查组绑定的检查项目id集合
      */
     @GetMapping("/findCheckItemIdsByCheckGroupId")
-    public Result findCheckItemIdsByCheckGroupId(Integer checkGroupId){
+        public Result findCheckItemIdsByCheckGroupId(Integer checkGroupId){
         List<Integer> list = checkgroupService.findCheckItemIdsByCheckGroupId(checkGroupId);
         return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,list);
+    }
+
+    /**
+     * 编辑检查组信息
+     */
+    @PostMapping("/edit")
+    public Result edit(@RequestParam List<Integer>checkitemIds,@RequestBody Checkgroup checkgroup){
+        try {
+            checkgroupService.edit(checkitemIds,checkgroup);
+            return new Result(true,MessageConstant.EDIT_CHECKGROUP_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.EDIT_CHECKGROUP_FAIL);
+        }
+    }
+
+    /**
+     * 删除检查组信息
+     */
+    @GetMapping("/delete")
+    public Result delete(Integer id){
+        Result result = checkgroupService.delete(id);
+        return result;
+    }
+
+    /**
+     * 查询所有检查组信息
+     */
+    @GetMapping("/findAll")
+    public Result findAll(){
+        List<Checkgroup>findAll = checkgroupService.findAll();
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,findAll);
     }
 
 }

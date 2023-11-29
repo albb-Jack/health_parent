@@ -92,6 +92,17 @@ public class CheckitemServiceImpl extends ServiceImpl<CheckitemMapper, Checkitem
         return checkitemMapper.findAll();
     }
 
+    /**
+     * //根据检查项id集合批量查询检查项信息
+     * @param checkItemIds
+     * @return
+     */
+    @Override
+    public List<Checkitem> batchFindById(List<Integer> checkItemIds) {
+
+        return checkitemMapper.batchFindById(checkItemIds);
+    }
+
 
 }
 

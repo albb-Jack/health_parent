@@ -3,12 +3,15 @@ package com.kawa.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.kawa.constant.MessageConstant;
 import com.kawa.entity.Checkgroup;
 import com.kawa.pojo.PageResult;
 import com.kawa.pojo.QueryPageBean;
+import com.kawa.pojo.Result;
 import com.kawa.service.CheckgroupService;
 import com.kawa.mapper.CheckgroupMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,6 +87,68 @@ public class CheckgroupServiceImpl extends ServiceImpl<CheckgroupMapper, Checkgr
     @Override
     public List<Integer> findCheckItemIdsByCheckGroupId(Integer checkGroupId) {
         return checkgroupMapper.findCheckItemIdsByCheckGroupId(checkGroupId);
+    }
+
+    /**
+     * 编辑检查组信息
+     * @param checkitemIds
+     * @param checkgroup
+     */
+    @Override
+    public void edit(List<Integer> checkitemIds, Checkgroup checkgroup) {
+
+        //1_更新 t_checkgroup
+        checkgroupMapper.editCheckgroup(checkgroup);
+
+        //2_更新 t_checkgroup_checkitem 中间表
+        //解绑原来的关系
+        checkgroupMapper.deleteBycheckgroupId(checkgroup.getId());
+
+        //3_添加 checkgroup_checkitem
+        if (checkgroup.getId()!=null){
+
+            for (Integer checkitemId : checkitemIds) {
+                checkgroupMapper.addCheckgroupCheckitem(checkgroup.getId(),checkitemId);
+            }
+        }
+    }
+
+    /**
+     * 根据ID删除检查组
+     * @param id
+     * @return
+     */
+    @Override
+    public Result delete(Integer id) {
+
+        try {
+            checkgroupMapper.deleteCheckgroupCheckitem(id);
+            checkgroupMapper.deleteCheckgroup(id);
+            return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.DELETE_CHECKGROUP_FAIL);
+        }
+    }
+
+    /**
+     * 查询所有检查组信息
+     * @return
+     */
+    @Override
+    public List<Checkgroup> findAll() {
+        return checkgroupMapper.findAll();
+    }
+
+    /**
+     * 根据检查组id集合 批量查询检查组对象
+     * @param checkGroupIds
+     * @return
+     */
+    @Override
+    public List<Checkgroup> batchFindById(List<Integer> checkGroupIds) {
+        return checkgroupMapper.batchFindById(checkGroupIds);
+
     }
 }
 

@@ -11,22 +11,16 @@ import lombok.Data;
 
 /**
  * 
- * @TableName t_checkgroup
+ * @TableName t_setmeal
  */
-@TableName(value ="t_checkgroup")
+@TableName(value ="t_setmeal")
 @Data
-public class Checkgroup implements Serializable {
+public class Setmeal implements Serializable {
     /**
      * 
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    /**
-     * 
-     */
-    @TableField(value = "code")
-    private String code;
 
     /**
      * 
@@ -37,14 +31,32 @@ public class Checkgroup implements Serializable {
     /**
      * 
      */
+    @TableField(value = "code")
+    private String code;
+
+    /**
+     *
+     */
     @TableField(value = "helpCode")
-    private String helpcode;
+    private String helpCode;
 
     /**
      * 
      */
     @TableField(value = "sex")
     private String sex;
+
+    /**
+     * 
+     */
+    @TableField(value = "age")
+    private String age;
+
+    /**
+     * 
+     */
+    @TableField(value = "price")
+    private Double price;
 
     /**
      * 
@@ -59,9 +71,14 @@ public class Checkgroup implements Serializable {
     private String attention;
 
     /**
-     * 一对多 一个检查组 对应 多个检查项
+     * 
+     */
+    @TableField(value = "img")
+    private String img;
+
+    /**
+     * 一对多 一个套餐 对应 对个检查组
      */
     @TableField(exist = false)
-    private List<Checkitem> checkitemList;
-
+    private List<Checkgroup> checkgroupList;
 }

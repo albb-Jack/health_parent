@@ -23,6 +23,7 @@ public class MessageConstant {
     public static final String DELETE_CHECKGROUP_FAIL = "删除检查组失败";
     public static final String DELETE_CHECKGROUP_FAIL_ALREADY_HAS_CHECKITEM = "删除检查组失败,该检查组中已经绑定了检查项";
     public static final String DELETE_CHECKGROUP_FAIL_ALREADY_HAS_SETMEAL = "删除检查组失败,该检查组中已经绑定了套餐数据,请先解绑";
+    public static final String DELETE_SETMEAL_FAIL_ALREADY_HAS_CHECKGROUP = "删除套餐失败,该套餐中已经绑定了检查组数据,请先解绑";
     public static final String DELETE_CHECKGROUP_SUCCESS = "删除检查组成功";
     public static final String QUERY_CHECKGROUP_SUCCESS = "查询检查组成功";
     public static final String QUERY_CHECKGROUP_FAIL = "查询检查组失败";

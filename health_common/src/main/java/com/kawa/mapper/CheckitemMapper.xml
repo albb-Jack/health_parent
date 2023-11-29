@@ -65,4 +65,12 @@
     <select id="findById" resultType="com.kawa.entity.Checkitem">
         SELECT * from t_checkitem where id = #{id}
     </select>
+
+<!--根据检查项id集合批量查询检查项信息-->
+    <select id="batchFindById" resultType="com.kawa.entity.Checkitem">
+        SELECT * from t_checkitem where id in
+        <foreach collection="checkItemIds" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

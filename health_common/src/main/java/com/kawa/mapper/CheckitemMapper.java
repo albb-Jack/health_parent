@@ -34,6 +34,9 @@ public interface CheckitemMapper extends BaseMapper<Checkitem> {
 
     //查询所有检查项
     List<Checkitem> findAll();
+
+    //根据检查项id集合批量查询检查项信息
+    List<Checkitem> batchFindById(List<Integer> checkItemIds);
 }
 
 

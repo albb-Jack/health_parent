@@ -61,10 +61,10 @@
                 </div>
                 <div class="table-content">
                     <ul class="table-list">
-                        <li class="table-item" v-for="checkgroup in setmeal.checkGroups">
+                        <li class="table-item" v-for="checkgroup in setmeal.checkgroupList">
                             <div class="item flex2">{{checkgroup.name}}</div>
                             <div class="item flex3">
-                                <label v-for="checkitem in checkgroup.checkItems">
+                                <label v-for="checkitem in checkgroup.checkitemList">
                                     {{checkitem.name}}
                                 </label>
                             </div>

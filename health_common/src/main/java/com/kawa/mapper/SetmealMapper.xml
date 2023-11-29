@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kawa.mapper.SetmealMapper">
+
+    <resultMap id="BaseResultMap" type="com.kawa.entity.Setmeal">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="helpCode" column="helpCode" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="CHAR"/>
+            <result property="age" column="age" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="FLOAT"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="attention" column="attention" jdbcType="VARCHAR"/>
+            <result property="img" column="img" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,code,
+        helpCode,sex,age,
+        price,remark,attention,
+        img
+    </sql>
+
+    <!--添加 t_setmeal_checkgroup 套餐id 和检查组id-->
+    <insert id="addSetmealCheckgroup">
+        INSERT INTO `health`.`t_setmeal_checkgroup`(`setmeal_id`, `checkgroup_id`)
+        VALUES (#{setmealId},#{checkgroupId});
+    </insert>
+
+    <!--添加套餐信息-->
+    <insert id="add">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO `health`.`t_setmeal` ( `id`, `name`, `code`, `helpCode`, `sex`, `age`, `price`, `remark`, `attention`, `img` )
+        VALUES
+        ( null , #{name}, #{code}, #{helpCode}, #{sex}, #{age}, #{price}, #{remark}, #{attention}, #{img} );
+    </insert>
+
+    <!--编辑套餐信息-->
+    <update id="edit">
+        UPDATE `health`.`t_setmeal`
+        SET
+            `name` = #{name},
+            `code` = #{code},
+            `helpCode` = #{helpCode},
+            `sex` = #{sex},
+            `age` = #{age},
+            `price` = #{price},
+            `remark` = #{remark},
+            `attention` = #{attention},
+            `img` = #{img}
+        WHERE
+            `id` = #{id};
+    </update>
+
+    <!--根据id删除套餐信息-->
+    <delete id="deleteBySetmealId">
+        DELETE FROM t_setmeal WHERE id = #{setmealId}
+    </delete>
+
+    <!--编辑套餐(解绑)-->
+    <delete id="deleteBycheckgroupId">
+        DELETE FROM t_setmeal_checkgroup WHERE setmeal_id = #{id}
+    </delete>
+
+    <!--分页查询套餐信息-->
+    <select id="findPage" resultType="com.kawa.entity.Setmeal">
+        SELECT * FROM t_setmeal
+        <if test="queryString != null and queryString != '' ">
+            where code like "%"#{queryString}"%" or name like "%"#{queryString}"%" or helpCode like "%"#{queryString}"%"
+        </if>
+        order by id Desc
+    </select>
+
+    <!--根据ID查询套餐信息-->
+    <select id="findById" resultType="com.kawa.entity.Setmeal">
+        SELECT * FROM t_setmeal WHERE id = #{id}
+    </select>
+
+    <!--根据套餐id查询和该套餐绑定的检查组id集合-->
+    <select id="findCheckGroupIdsBySetmealId" resultType="java.lang.Integer">
+        SELECT checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{setmealId}
+    </select>
+
+    <!--移动端 查询套餐列表-->
+    <select id="findAll" resultType="com.kawa.entity.Setmeal">
+       SELECT * FROM t_setmeal
+    </select>
+</mapper>
